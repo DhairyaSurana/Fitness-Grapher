@@ -1,6 +1,7 @@
 # fit_grapher.py
 
 import re
+import sys
 import datetime
 import gspread
 import matplotlib.pyplot as plt
@@ -49,9 +50,10 @@ def getData(sheet, criteria):
 
 if __name__ == "__main__":
 
-    sheet = getSheet("Fitness Log")
-    data = getData(sheet, "chest press")
-    #print(data[0])
-    graphData("asdf", data[0], data[1])
-    print(data[1])
-    #graphData("bicep curls", [1,1,1,1], [1,2,3,4])
+    if len(sys.argv) == 1:
+        print("Error: Arg empty")
+    else:
+        sheet = getSheet("Fitness Log")
+        data = getData(sheet, sys.argv[1])
+        graphData(sys.argv[1], data[0], data[1])
+    
