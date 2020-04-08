@@ -16,7 +16,7 @@ def graphData(workout, d1, d2):
     plt.title(workout)
     plt.show()
 
-def getData(sheet_name):
+def getSheet(sheet_name):
 
     # use creds to create a client to interact with the Google Drive API
     scope = ['https://www.googleapis.com/auth/drive']
@@ -29,14 +29,24 @@ def getData(sheet_name):
 
     return sheet
 
-def getCells(sheet, criteria):
+def getData(sheet, criteria):
     
-    criteria = re.compile(r'chest press')
-    return sheet.findall(criteria)
+    crit = re.compile(criteria)
+    #return sheet.findall(criteria)
+    data_dict = {}
+    for c in sheet.findall(crit):
 
+        date = sheet.cell(c.row, c.col-1).value
+        workout = re.search(criteria + "\(\d{,3},\s*\d{1},\s*\d{1,2}\)", str(c)).group(0)
+        
+        data_dict[date] = workout
+        
+    print(data_dict)
+    return data_dict
 if __name__ == "__main__":
 
-    # sheet = getData("Fitness Log")
+    sheet = getSheet("Fitness Log")
+    data = getData(sheet, "asdf")
     # print(sheet.get_all_records())
-    # print(getCells(sheet, "chest press"))
-    graphData("bicep curls", [1,1,1,1], [1,2,3,4])
+    #print(getCells(sheet, "chest press"))
+    #graphData("bicep curls", [1,1,1,1], [1,2,3,4])
