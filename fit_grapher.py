@@ -1,6 +1,7 @@
 # fit_grapher.py
 
 import re
+import datetime
 import gspread
 import matplotlib.pyplot as plt
 from oauth2client.service_account import ServiceAccountCredentials
@@ -11,7 +12,7 @@ def graphData(workout, d1, d2):
     plt.plot(d1, d2)
     
     plt.xlabel(workout)
-    plt.ylabel('some numbers')
+    plt.ylabel('Weight')
     
     plt.title(workout)
     plt.show()
@@ -33,20 +34,24 @@ def getData(sheet, criteria):
     
     crit = re.compile(criteria)
     #return sheet.findall(criteria)
-    data_dict = {}
+    dates = []
+    workouts = []
     for c in sheet.findall(crit):
 
         date = sheet.cell(c.row, c.col-1).value
         workout = re.search(criteria + "\(\d{,3},\s*\d{1},\s*\d{1,2}\)", str(c)).group(0)
         
-        data_dict[date] = workout
-        
-    print(data_dict)
-    return data_dict
+        weight =  int(workout[workout.find("(")+1 : workout.find(",")])
+        dates.append(date)
+        workouts.append(weight)
+    
+    return (dates, workouts)
+
 if __name__ == "__main__":
 
     sheet = getSheet("Fitness Log")
-    data = getData(sheet, "asdf")
-    # print(sheet.get_all_records())
-    #print(getCells(sheet, "chest press"))
+    data = getData(sheet, "chest press")
+    #print(data[0])
+    graphData("asdf", data[0], data[1])
+    print(data[1])
     #graphData("bicep curls", [1,1,1,1], [1,2,3,4])
