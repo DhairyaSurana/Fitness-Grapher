@@ -2,9 +2,19 @@
 
 import re
 import gspread
+import matplotlib.pyplot as plt
 from oauth2client.service_account import ServiceAccountCredentials
 
 
+def graphData(workout, d1, d2):
+
+    plt.plot(d1, d2)
+    
+    plt.xlabel(workout)
+    plt.ylabel('some numbers')
+    
+    plt.title(workout)
+    plt.show()
 
 def getData(sheet_name):
 
@@ -26,6 +36,7 @@ def getCells(sheet, criteria):
 
 if __name__ == "__main__":
 
-    sheet = getData("Fitness Log")
-    print(sheet.get_all_records())
-    print(getCells(sheet, "chest press"))
+    # sheet = getData("Fitness Log")
+    # print(sheet.get_all_records())
+    # print(getCells(sheet, "chest press"))
+    graphData("bicep curls", [1,1,1,1], [1,2,3,4])
