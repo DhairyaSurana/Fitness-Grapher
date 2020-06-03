@@ -10,7 +10,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 
 def graphData(workout, d1, d2):
 
-    plt.plot(d1, d2)
+    plt.plot(d1, d2, '-bo')
     
     plt.xlabel(workout)
     plt.ylabel('Weight')
