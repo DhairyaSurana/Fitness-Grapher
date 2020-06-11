@@ -34,7 +34,7 @@ def getSheet(sheet_name):
 def getData(sheet, criteria):
     
     crit = re.compile(criteria)
-    #return sheet.findall(criteria)
+
     dates = []
     workouts = []
     for c in sheet.findall(crit):
@@ -46,6 +46,9 @@ def getData(sheet, criteria):
         dates.append(date)
         workouts.append(weight)
     
+    if not dates and not workouts:
+        return None
+
     return (dates, workouts)
 
 if __name__ == "__main__":
@@ -55,5 +58,9 @@ if __name__ == "__main__":
     else:
         sheet = getSheet("Fitness Log")
         data = getData(sheet, sys.argv[1])
-        graphData(sys.argv[1], data[0], data[1])
+
+        if data is not None:
+            graphData(sys.argv[1], data[0], data[1])
+        else:
+            print("Error: Exercise \"", sys.argv[1], "\" not found." )
     
